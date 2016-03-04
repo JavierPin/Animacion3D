@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>points-1.frag</file>
+        <file>points-1.vert</file>
+        <file>points-2.frag</file>
+        <file>points-2.vert</file>
+        <file>lines-1.frag</file>
+        <file>lines-1.vert</file>
+        <file>phong.frag</file>
+        <file>phong.vert</file>
+    </qresource>
+</RCC>
