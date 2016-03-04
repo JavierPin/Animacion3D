@@ -121,7 +121,6 @@ void MainWindow::interpolacion_esferica(){
     cout << test.x() << "," << test.y() << "," << test.z() <<","<<test.w() << endl;
 
     QMatrix4x4 mt = ip->getMatrizRotacion(test);
-    qDebug()<<mt;
 
     ui->openGLWidget->aplicaEsferica(mt);
 
@@ -130,7 +129,7 @@ void MainWindow::interpolacion_esferica(){
 void MainWindow::on_bt_lineal_clicked()
 {
     MainWindow::interpolacion_lineal();
-    playLineal();
+    //playLineal();
 
 }
 
@@ -151,19 +150,30 @@ void MainWindow::playLineal(){
                 for(int j=0;j<=5;j++){
                     ui->openGLWidget->vScale=(QVector3D(1.3,0.7,1.3));
                     interpolacion_lineal();
-                    interpolacion_esferica();
+                    //interpolacion_esferica(); //en la proxima version
                     step(0.5);
                 }
             }else{
                  ui->openGLWidget->vScale=(QVector3D(1,1,1));
                  interpolacion_lineal();
-                 interpolacion_esferica();
+                 //interpolacion_esferica(); // en la proxima version
             }
             step(0.5);
 
         }
         ui->sb_t->setValue(0.0);
-    }while(true);
+    }while(!stop);
+}
+
+void MainWindow::playEsferica(){
+    do{
+        for(float i=(float)ui->sb_t->value();i<=1.1f;i=i+0.1f){
+            ui->sb_t->setValue((double)i);
+               interpolacion_esferica();
+               step(1);
+            }
+        ui->sb_t->setValue(0.0);
+    }while(!stop);
 }
 
 void MainWindow::step(float t){
@@ -171,4 +181,42 @@ void MainWindow::step(float t){
     while (QTime::currentTime()<tick){
         QCoreApplication::processEvents(QEventLoop::AllEvents,100);
     }
+}
+
+void MainWindow::on_bt_play_clicked()
+{
+    stop=false;
+    MainWindow::interpolacion_lineal();
+    playLineal();
+}
+
+void MainWindow::on_bt_stop_clicked()
+{
+    stop=true;
+}
+
+void MainWindow::on_bt_play_2_clicked()
+{
+    stop=false;
+    MainWindow::interpolacion_esferica();
+    playEsferica();
+}
+void MainWindow::on_bt_stop_2_clicked()
+{
+    stop=true;
+}
+
+void MainWindow::on_sb_t_valueChanged(double arg1)
+{
+    ui->hs_t->setValue(arg1*100);
+}
+
+
+
+void MainWindow::on_hs_t_sliderMoved(int position)
+{
+    float valor;
+    valor=(float) position;
+    valor = valor /100;
+    ui->sb_t->setValue((double)valor);
 }
