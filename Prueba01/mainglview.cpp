@@ -2,6 +2,10 @@
 #include <QtDebug>
 #include <QFileInfo>
 #include <iostream>
+#include <QTime>
+#include <QCoreApplication>
+#include "ipolacion.h"
+
 
 using namespace std;
 
@@ -273,4 +277,32 @@ void MainGLView::wheelEvent(QWheelEvent *event){
     update();
 
 }
+
+void MainGLView::bezier(){
+    vector<QVector3D> p;
+    p.push_back(QVector3D(0,0,0));
+    p.push_back(QVector3D(2,5,0));
+    p.push_back(QVector3D(4,-5,0));
+    p.push_back(QVector3D(6,0,0));
+    vector<QVector3D> *bz;
+    bz=ip.ComputeBezier(p,100);
+
+    for(int i = 0; i<100;i++){
+        qDebug() << bz->at(i);
+        step(0.01);
+        aplicaLineal(bz->at(i));
+    }
+
+
+}
+
+
+
+void MainGLView::step(float t){
+    QTime tick = QTime::currentTime().addMSecs(t*100);
+    while (QTime::currentTime()<tick){
+        QCoreApplication::processEvents(QEventLoop::AllEvents,100);
+    }
+}
+
 

@@ -13,6 +13,7 @@
 #include "pagshaderprogram.h"
 #include "pagcamera.h"
 #include "pagrevolutionobject.h"
+#include "ipolacion.h"
 
 class MainGLView : public QOpenGLWidget, protected QOpenGLFunctions_4_0_Core
 {
@@ -30,6 +31,8 @@ public:
     void aplicaLineal (QVector3D q);
     void aplicaEsferica(QMatrix4x4 v);
     void aplicaEscalado(QVector3D v);
+    void bezier();
+    void step(float t);
 
     QVector3D vScale;
     QMatrix4x4 m;
@@ -59,6 +62,8 @@ private:
     PagRevolutionObject* obj2;
 
     void setShader(QString sname);
+
+    iPolacion ip;
 
 };
 

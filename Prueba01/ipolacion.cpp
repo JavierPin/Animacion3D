@@ -69,8 +69,6 @@ QVector4D iPolacion::ipEsferica(vector<QVector4D> q, vector<float> l, float w){
 }
 
 QMatrix4x4 iPolacion::getMatrizRotacion(QVector4D q){
-
-
     QMatrix4x4 m = QMatrix4x4((1-(2*((q.y()*q.y())+(q.z()*q.z())))),
                               ((2*q.x()*q.y())-(2*q.w()*q.z())),
                               ((2*q.w()*q.y())+(2*q.x()*q.z())),
@@ -89,3 +87,62 @@ QMatrix4x4 iPolacion::getMatrizRotacion(QVector4D q){
                               0,0,0,1);
     return m;
 }
+
+
+QVector3D iPolacion::cBezier(vector<QVector3D> cp, float t )
+{
+    float   ax, bx, cx;
+    float   ay, by, cy;
+    float   az, bz, cz;
+    float   tSquared, tCubed;
+    QVector3D result;
+
+    /* cálculo de los coeficientes polinomiales */
+
+    cx = 3.0 * (cp[1].x() - cp[0].x());
+    bx = 3.0 * (cp[2].x() - cp[1].x()) - cx;
+    ax = cp[3].x() - cp[0].x() - cx - bx;
+
+    cy = 3.0 * (cp[1].y() - cp[0].y());
+    by = 3.0 * (cp[2].y() - cp[1].y()) - cy;
+    ay = cp[3].y() - cp[0].y() - cy - by;
+
+    cz = 3.0 * (cp[1].z() - cp[0].z());
+    bz = 3.0 * (cp[2].z() - cp[1].z()) - cz;
+    az = cp[3].z() - cp[0].z() - cz - bz;
+
+    /* calculate the curve point at parameter value t */
+
+    tSquared = t * t;
+    tCubed = tSquared * t;
+
+    result.setX( (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x());
+    result.setY( (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y());
+    result.setZ( (az * tCubed) + (bz * tSquared) + (cz * t) + cp[0].z());
+
+    return result;
+}
+
+/*
+ ComputeBezier fills an array of Point2D structs with the curve
+ points generated from the control points cp. Caller must
+ allocate sufficient memory for the result, which is
+ <sizeof(Point2D) numberOfPoints>
+*/
+
+vector<QVector3D> *iPolacion::ComputeBezier(vector<QVector3D> cp, int numberOfPoints) {
+    vector<QVector3D> *curve = new vector<QVector3D>;
+    float   dt;
+    int	  i;
+
+    dt = 1.0 / ( numberOfPoints - 1 );
+
+    for( i = 0; i < numberOfPoints; i++){
+        curve->push_back(cBezier(cp, i*dt ));
+        qDebug() << curve->at(i);
+    }
+    return curve;
+}
+
+
+
