@@ -123,23 +123,16 @@ QVector3D iPolacion::cBezier(vector<QVector3D> cp, float t )
     return result;
 }
 
-/*
- ComputeBezier fills an array of Point2D structs with the curve
- points generated from the control points cp. Caller must
- allocate sufficient memory for the result, which is
- <sizeof(Point2D) numberOfPoints>
-*/
-
 vector<QVector3D> *iPolacion::ComputeBezier(vector<QVector3D> cp, int numberOfPoints) {
     vector<QVector3D> *curve = new vector<QVector3D>;
     float   dt;
     int	  i;
 
-    dt = 1.0 / ( numberOfPoints - 1 );
+    dt = (1.0) / ( numberOfPoints - 1 );
 
     for( i = 0; i < numberOfPoints; i++){
         curve->push_back(cBezier(cp, i*dt ));
-        qDebug() << curve->at(i);
+       // qDebug() << curve->at(i);
     }
     return curve;
 }

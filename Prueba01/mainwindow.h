@@ -44,6 +44,8 @@ private slots:
 
     void on_bt_stop_2_clicked();
 
+    void on_bt_practica2_clicked();
+
 private:
     Ui::MainWindow *ui;
      bool stop=false;

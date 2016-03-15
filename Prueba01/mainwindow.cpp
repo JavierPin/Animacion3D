@@ -220,3 +220,8 @@ void MainWindow::on_hs_t_sliderMoved(int position)
     valor = valor /100;
     ui->sb_t->setValue((double)valor);
 }
+
+void MainWindow::on_bt_practica2_clicked()
+{
+        ui->openGLWidget->bezier();
+}

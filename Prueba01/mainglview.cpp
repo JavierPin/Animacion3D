@@ -289,8 +289,8 @@ void MainGLView::bezier(){
 
     for(int i = 0; i<100;i++){
         qDebug() << bz->at(i);
-        step(0.01);
         aplicaLineal(bz->at(i));
+        step(0.1);
     }
 
 
